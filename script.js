@@ -1,8 +1,10 @@
 let countdown;
 const timerDisplay = document.querySelector('.timer_display-left');
 const endTime = document.querySelector('.timer_display-end');
+const buttons = document.querySelectorAll('[data-time]');
 
 function timer(seconds) {
+    clearInterval(countdown);
 
     const currentTime = Date.now();
     const endTime = currentTime + seconds * 1000;
@@ -44,5 +46,19 @@ function displayEndTime(timestamp) {
 
     endTime.textContent = `Вернуться в ${hour}:${minutes < 10 ? '0' : ""}${minutes}`;
 
-
 }
+
+function startTimer() {
+    const seconds = parseInt(this.dataset.time);
+    timer(seconds);
+}
+
+buttons.forEach(button => button.addEventListener('click', startTimer));
+
+document.timerForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const minutes = parseInt(this.minutes.value);
+    timer(minutes * 60);
+
+    this.reset();
+})
